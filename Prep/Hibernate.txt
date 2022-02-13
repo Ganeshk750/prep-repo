@@ -1,0 +1,7 @@
+FetchType.LAZY indicates that the data should be fetched lazily when it called for the first time. 
+Persistence Provider (JPA/Hibernate etc.) retrieves parent entity 
+data first then retrieves child entity data on demand only.
+
+
+FetchType.EAGER indicates that the data should be fetched eagerly when it called for the first time.
+Persistence Provider (JPA/Hibernate etc.) retrieves parent & child entity data together at a time.

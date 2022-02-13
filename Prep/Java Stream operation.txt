@@ -1,0 +1,140 @@
+How to use Stream Intermediate Operations
+-----------------------------------------
+filter()
+
+Stream<String> s = Stream.of("lion", "cat", "monkey", "cow", "horse");
+s.filter(x -> x.strartWith("c"))
+.forEach(System.out::println)
+
+// cat
+// cow
+
+
+distinct()
+
+Stream<String> s = Stream.of("cat", "cat", "monkey", "cow", "cat");
+s.distinct().forEach(System.out::println); 
+
+// monkey
+// cow
+
+limit() and skip()
+
+Stream<Integer> s = Stream.iterate(1, n -> n + 1); 
+s.skip(9).limit(6).forEach(System.out::print); 
+
+//101112131415 
+
+map() vs flatMap()
+
+when to use map and flatMap
+---------------------------
+if u want to transform the elements of a stream in some way.
+use map() if u want to transform each element into a single
+value . use faltMap() if u want to transform each element to 
+multiple values and also compress/flatten the resulting stream.
+
+
+The additional world flat in faltMap () indicates the flattening,
+which is the additional task done by flatMap().
+
+map()
+-----
+1.> It works on stream of values.
+2.> It performs only transformation.
+3.> It produces single value for each input value.
+
+
+flatMap()
+---------
+1.> It works on Stream of Stream of values.
+2.> It performs transformation as well as flattening.
+3.> It produces multiple values for each input value.
+
+
+public class Programmer {
+   private String name;
+   private List<String> skills;
+
+   //getters, setters, AllArgsConstructor
+}
+
+List<Programmer> listOfProgrammers = List.of(
+     new Programmer("Programmer1", List.of("Java", "Python", "Angular")),
+     new Programmer("Programmer2", List.of("Ruby", "Angular", "Java")),
+     new Programmer("Programmer3", List.of("React", "Spring", "Angular")) 
+);
+
+
+// Extracting the name of all Programmers
+
+listOfProgrammers.stream()
+      .map(Programmer::getName)
+      .collect(Collectors.toList())
+      .forEach(System.out::println);
+
+
+//Programmer1
+//Programmer2
+//Programmer3
+
+
+listOfProgrammers.stream()
+      .flatMap(p -> p.getSkills().stream())
+      .collect(Collectors.toSet())
+      .forEach(System.out::println);
+
+Output:-
+--------
+Java
+Spring
+Ruby
+React
+Angular
+Python
+
+sorted()
+
+Stream<String> streamOfStrings = Stream.of("Sunday", "Monday", "Wednesday", "Friday");
+streamOfStrings.sorted().forEach(System.out::print);
+
+streamOfStrings.sorted(Comparator.reverseOrder()).forEach(System.out::print);
+
+Output:-
+--------
+FridayMondaySundayWednesday
+
+WednesdaySundayMondayFriday
+
+
+peek()
+
+public int triplesDivisibleBy2Sum(int start, int end) {
+    return IntStream.rangeClosed(start, end)
+     .peek(n -> System.out.println("original element : " +n))         //prints value before multiplying by 3
+     .map(n -> n * 3)
+     .peek(n -> System.out.println("Tripled element : " +n))          //prints value before filtering
+     .filter(n -> n % 2 == 0)
+     .peek(n -> System.out.println("Divisible By 2 element : " +n))   //prints value after filtering but before summing
+     .sum();
+}
+
+output:-
+-------
+original element : 10
+Tripled element : 30
+Divisible By 2 element : 30
+original element : 11
+Tripled element : 33
+original element : 12
+Tripled element : 36
+Divisible By 2 element : 36
+original element : 13
+Tripled element : 39
+original element : 14
+Tripled element : 42
+Divisible By 2 element : 42
+original element : 15
+Tripled element : 45
+
+

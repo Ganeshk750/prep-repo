@@ -1,0 +1,162 @@
+STREAM:- Stream in Java is a sequence of data. it help us in performing various
+operations with data.
+
+There are two types of Stream
+ 1.> Sequential
+ 2.> Parallel
+
+Stream operations are divided in two catrgories
+ 1.> Intermediate
+ 2.> Terminal
+
+CEATING A STREAM
+-----------------
+1.
+using Stream.of('','')
+Integer [] array = {1,2,3,4,5,6,7,8,9};
+Stream<Integer> streamIntegers = stream().of(array);
+
+2. Stream from a collection using stream() & parralelStream()
+-------------------------------------------------------------
+List<String> list = Arrays.asList("https://","javatechonline", "dot", "com");
+//OR
+List<String> list = List.of("https://","javatechonline", "dot", "com");
+
+Stream<String> streamofStrings = list.stream(); 
+Stream<String> streamofStrings = list.parallelStream();
+
+3. Stream from an Array using Arrays.stream()
+---------------------------------------------
+String[] arr = new String[] {"a", "b", "c"}
+String<String> streamOfStrings = Arrays.stream(arr);
+
+Stream.of()
+Arrays.stream() are two commonly used method for creating secquential stream.
+
+4. Stream using Stream.builder()
+---------------------------------
+Builder<String> builder = Stream.<String>bulder();
+builder.add("a").add("b").add("c")
+Stream<String> s = builder.build();
+
+5. Creating an Empty Stream using Stream.empty()
+------------------------------------------------
+Stream<String> emptyStream = Stream.empty();
+
+6. Creating an infinite Stream using Stream.generated()
+-------------------------------------------------------
+Random random = new Random();
+Stream<Integer> stream = Stream.generated(
+                      () -> { return random.nextInt(100); }
+                    ).limit(5);
+
+7. Creating an infinite Stream using Stream.iterate() method
+------------------------------------------------------------
+Stream<Integer> streamOfOddNumbers = Stream.iterate(1, n -> n + 2);
+
+8. Creating Stream of a File
+----------------------------
+Stream<String> streamOfStrings = Files.lines(Paths.get(filePath));
+streamOfStrings.forEach((line) -> System.out.println(line));
+
+Stream<String> streamWithCharset = Files.lines(path, Charset.forName("UTF-8"));
+===============================================================================
+
+
+HOW TO CONVERT FROM A STREAM TO A COLLECTION
+---------------------------------------------
+Ex 1:-
+List<String> strings = Stream.of("this", "is", "a", "list", "of", "strings")
+                        .collect(Collectors.toList());
+
+Ex 2:-
+List<Integer> ints = IntStream.of(1, 2, 3, 4, 5, 6)
+                      .collect(Collectors.toList()); // does not compile
+
+1) Using the boxed method : boxed() method converts int to Integer. 
+We can use the boxed method on Stream to convert the 
+IntStream to a Stream<Integer> as shown below:
+
+List<Integer> ints = IntStream.of(1, 2, 3, 4, 5, 6)
+                       .boxed()
+                       .collect(Collectors.toList());
+
+2) Using the mapToObj method : The mapToObj() method converts each element 
+from a primitive to an instance of the wrapper class as below:
+
+List<Integer> ints = IntStream.of(1, 2, 3, 4, 5, 6)
+                       .mapToObj(Integer::valueOf)
+                       .collect(Collectors.toList());
+
+Just as mapToInt, mapToLong, and mapToDouble parse streams 
+of objects into the associated primitives,
+
+Ex 3:-
+int [] intArray = IntStream.of(1,2,3,4,5,6).toArray();
+// OR
+int [] intArray = IntStream.of(1,2,3,4,5,6).toArray(int[]::new);
+
+
+What are the major operations supported by Stream API?
+======================================================
+1.> INTERMEDIATE OPERATIONS
+----------------------------
+An Intermediate operations returns another stream as a result
+,they can be chained together to form a pipeline of operations.
+as the name suggest, the opetations does't give end result.
+They just convert one stream to another stream
+
+Example:- map(), filter(), distinct(), sorted(), limit(), skip()
+
+2.> TERMINAL OPERATIONS
+------------------------
+The operations which returns non-stream values such as primitive or object
+are called terminal operations. furthermore, unlike terminal operations,
+we cant chain them together.they produce end result. once a terminal operations 
+completes, the stream is no longer valid. hence we cant use that stream again.
+
+Example:- forEach(), toArray(), reduce(), collect(), max(),
+min(), count(), anyMatch(), allMatch(), noneMatch(), findFirst(), findAny()
+
+
+PIPELINE
+--------
+
+SOURCE ----> INTERMEDIATE -----> TERMINAL
+
+pipeline operations may contain any number of intermediate operations,
+there has to be one terminal operation, that too at the end of pipeline.
+
+Moreover, Intermediate operations are lazily loaded. When we call intermediate
+operations, they are actually not executed.They are just stroed in the memory and
+executed when the terminal operation is called on the stream.
+
+
+HOW TO PRINT A STREAM?
+-----------------------
+
+1.> s.forEach(System.out::println);
+
+2.> System.out.println(s.collect(Collectors.toList()));
+
+3.> s.limit(4).forEach(System.out::println);
+
+4.> s.peek(System.out::println).count();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

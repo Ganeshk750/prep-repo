@@ -1,0 +1,81 @@
+Stream Terminal Operations
+--------------------------
+1.> count()
+
+Stream<String> s = Stream.of("Cow", "Tiger", "Elephant"); 
+System.out.println(s.count()); 
+
+//3
+
+2.> min() and max()
+
+Stream s = Stream.of("Java", "Python", "Scala"); 
+Optional min = s.min((s1, s2) -> s1.length() — s2.length()); 
+min.ifPresent(System.out::println); 
+
+// Java
+
+3.> findAny() and findFirst()
+
+Optional firstEvenNumber = Stream.of(9, 5, 8, 7, 4, 9, 2, 11, 3)
+                            .filter(n -> n % 2 == 0)
+                            .findFirst();
+System.out.println(firstEvenNumber);
+
+//Optional[8]
+
+
+Optional firstNumberDivisibleBy5 = Stream.of(9, 5, 8, 7, 4, 9, 2, 11, 10, 3)
+                                    .filter(n -> n > 10)             
+                                    .filter(n -> n % 5 == 0)    //empty stream in this line
+                                    .findFirst();
+System.out.println(firstNumberDivisibleBy5); 
+
+// Optional.empty
+
+
+4.> anyMatch( ), allMatch( ), and noneMatch( )
+
+List<String> listOfSkills = Arrays.asList("Core Java", "Spring Boot", "Hibernate", "Angular"); 
+
+Predicate<String> pred = x -> x.startsWith("S"); 
+System.out.println(listOfSkills.stream().anyMatch(pred));         // true 
+System.out.println(listOfSkills.stream().allMatch(pred));         // false 
+System.out.println(listOfSkills.stream().noneMatch(pred));        // false
+
+5. forEach
+
+6. collect()
+
+Stream<String> streamOfSkills = Stream.of("Java", "Scala", "Python", "Spring");
+ streamOfSkills
+    .filter(x -> x.startsWith("S"))
+    .collect(Collectors.toList())     //Collecting the result of a stream into a List
+    .forEach(System.out::println);
+
+Output:-
+-------
+Scala
+Spring
+
+7.> reduce()  1. identity 2. Accumulator 3. Combiner
+
+List<String> letters = Arrays.asList("j", "a", "v", "a", "t", "e", "c", "h", "o", "n", "l", "i", "n", "e"); 
+String result = letters .stream()
+    .reduce(" ", (partialString, element) -> partialString + element);
+System.out.println(result);
+
+//javatechonline
+
+String result = letters.stream().reduce(" ", String::concat);
+
+
+BinaryOperator op = (a, b) -> a * b; 
+Stream empty = Stream.empty(); 
+Stream oneElement = Stream.of(3); 
+Stream threeElements = Stream.of(3, 4, 5); 
+empty.reduce(op).ifPresent(System.out::print); // no output 
+oneElement.reduce(op).ifPresent(System.out::print); // 3 
+threeElements.reduce(op).ifPresent(System.out::print); // 60
+
+
